@@ -1,6 +1,8 @@
 <?php
+
 $username = "";
 $password = "";
+
 
 	session_write_close();
 $ch = curl_init();

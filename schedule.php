@@ -1,6 +1,6 @@
 <?php
-$username = "bielick3";
-$password = "SandyBA30";
+$username = "";
+$password = "";
 
 	session_write_close();
 $ch = curl_init();

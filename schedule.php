@@ -3,35 +3,32 @@
 $username = "";
 $password = "";
 
+////////////////////////////////////////////////////
+// Login
+////////////////////////////////////////////////////
 
-	session_write_close();
+
+session_write_close();
 $ch = curl_init();
 	curl_setopt($ch, CURLOPT_COOKIESESSION, true);
 	curl_setopt($ch, CURLOPT_COOKIEJAR, "cookies.txt");
 	curl_setopt($ch, CURLOPT_COOKIEFILE, "cookies.txt");
-	
 	curl_setopt($ch, CURLOPT_HEADER, TRUE);
-    curl_setopt($ch, CURLOPT_NOBODY, FALSE);
-    //curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
-	
-    curl_setopt($ch, CURLOPT_URL, "https://login.msu.edu/?App=RO_Schedule");
+	curl_setopt($ch, CURLOPT_NOBODY, FALSE);
+	//curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
+	curl_setopt($ch, CURLOPT_URL, "https://login.msu.edu/?App=RO_Schedule");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	
-	$response = curl_exec($ch);
-	
-	$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-	$header = substr($response, 0, $header_size);
-	$body = substr($response, $header_size);
-	
-	//echo $header;
-	
-	curl_close($ch);
-	unset($ch);
+$response = curl_exec($ch);
+
+$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+$header = substr($response, 0, $header_size);
+$body = substr($response, $header_size);
+
+curl_close($ch);
+unset($ch);
 		
-	$stamp = findStamp($body);
-	$pwField = findPWField($body);
-	
-	$cookie = findSessionID($header);
+$stamp = findStamp($body);
+$pwField = findPWField($body);
 	
 $loginurl = "https://login.msu.edu/Login";
 $query = "AlternateID=".$username."&".$pwField."=".$password."&EncryptedStamp=".$stamp."&App=RO_Schedule&submit=Login&AuthenticationMethod=MSUNet";
@@ -49,97 +46,81 @@ $header = array(
 	"Accept-Language: en-US,en;q=0.8",
 );
 
-	session_write_close();
-
+session_write_close();
 $ch = curl_init();
 	curl_setopt($ch, CURLOPT_COOKIESESSION, false);
 	curl_setopt($ch, CURLOPT_COOKIEJAR, "cookies.txt");
 	curl_setopt($ch, CURLOPT_COOKIEFILE, "cookies.txt");
-	
 	curl_setopt($ch, CURLOPT_REFERER, "https://login.msu.edu/?App=RO_Schedule");
 	curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36'); 
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-	
 	curl_setopt($ch, CURLOPT_HEADER, TRUE);
     curl_setopt($ch, CURLOPT_NOBODY, FALSE);
 	//curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
-	
 	curl_setopt($ch, CURLOPT_POST, TRUE); 
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
     curl_setopt($ch, CURLOPT_HTTPGET, FALSE);
-	
 	curl_setopt($ch, CURLOPT_URL, $loginurl);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	
-	$response = curl_exec($ch);
+$response = curl_exec($ch);
 
-	
-	$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-	$header = substr($response, 0, $header_size);
-	$body = substr($response, $header_size);
-	
-	curl_close($ch);
-	unset($ch);
-	
-	//echo ($body);
-	//echo ($header);
-	
-	
-	////////////////////////////////////////////////////
-	// Enrolment checking
-	////////////////////////////////////////////////////
-	
-	//echo ($body);
-	$enrolled = findEnrolled();
+$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+$header = substr($response, 0, $header_size);
+$body = substr($response, $header_size);
+
+curl_close($ch);
+unset($ch);
+
+////////////////////////////////////////////////////
+// Enrolment checking
+////////////////////////////////////////////////////
+
+$enrolled = findEnrolled();
+While($enrolled > 49) {
+	sleep(5);
 	//echo $enrolled;
-	While($enrolled > 49) {
-		sleep(5);
-		echo $enrolled;
-		
-		$enrolled = findEnrolled();
-	}
 	
-	////////////////////////////////////////////////////
-	// Sign-Up
-	////////////////////////////////////////////////////
-	
-	$signupurl = "https://schedule.msu.edu/enroll.asp";
-	$query = "enrl_StuID=".$username."&enrl_Action_97FY2R=A&enrl_SctnID=97FY2R&enrl_TermCode=FS15&enrl_TermID=1154&enrl_SUBJ=CSE&enrl_CRSE=476&enrl_SCTN=001";
-	
-	session_write_close();
+	$enrolled = findEnrolled();
+}
+
+////////////////////////////////////////////////////
+// Sign-Up
+////////////////////////////////////////////////////
+
+$signupurl = "https://schedule.msu.edu/enroll.asp";
+$query = "enrl_StuID=".$username."&enrl_Action_97FY2R=A&enrl_SctnID=97FY2R&enrl_TermCode=FS15&enrl_TermID=1154&enrl_SUBJ=CSE&enrl_CRSE=476&enrl_SCTN=001";
+
+session_write_close();
 $ch = curl_init();
 	curl_setopt($ch, CURLOPT_COOKIESESSION, false);
 	curl_setopt($ch, CURLOPT_COOKIEJAR, "cookies.txt");
 	curl_setopt($ch, CURLOPT_COOKIEFILE, "cookies.txt");
-	
 	curl_setopt($ch, CURLOPT_REFERER, "https://schedule.msu.edu/enrollConfirm.asp");
 	curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36'); 
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-	
 	curl_setopt($ch, CURLOPT_HEADER, TRUE);
     curl_setopt($ch, CURLOPT_NOBODY, FALSE);
 	//curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
-	
 	curl_setopt($ch, CURLOPT_POST, TRUE); 
 	//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
     curl_setopt($ch, CURLOPT_HTTPGET, FALSE);
-	
 	curl_setopt($ch, CURLOPT_URL, $signupurl);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	
-	$response = curl_exec($ch);
+$response = curl_exec($ch);
 
 	
-	$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-	$header = substr($response, 0, $header_size);
-	$body = substr($response, $header_size);
-	
-	curl_close($ch);
-	unset($ch);
-	
-	echo $body;
+$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+$header = substr($response, 0, $header_size);
+$body = substr($response, $header_size);
+
+curl_close($ch);
+unset($ch);
+
+//echo $body;
+
+//TO-DO - Notification on fail or success of entering class
 	
 	
 	
@@ -152,38 +133,30 @@ function findEnrolled() {
 	$query = "Semester=FS151154fall+2015&POST=Y&Button=&Online=&Subject=CSE&CourseNumber=476&Instructor=ANY&StartTime=0600&EndTime=2350&OnBeforeDate=&OnAfterDate=&Sunday=Su&Monday=M&Tuesday=Tu&Wednesday=W&Thursday=Th&Friday=F&Saturday=Sa&OnCampus=Y&OffCampus=Y&OnlineCourses=Y&StudyAbroad=Y&MSUDubai=Y&OpenCourses=A&Submit=Search+for+Courses";
 	
 	session_write_close();
-$ch = curl_init();
-	curl_setopt($ch, CURLOPT_COOKIESESSION, false);
-	curl_setopt($ch, CURLOPT_COOKIEJAR, "cookies.txt");
-	curl_setopt($ch, CURLOPT_COOKIEFILE, "cookies.txt");
-	
-	curl_setopt($ch, CURLOPT_REFERER, "https://schedule.msu.edu/searchResults.asp");
-	curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36'); 
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-	
-	curl_setopt($ch, CURLOPT_HEADER, TRUE);
-    curl_setopt($ch, CURLOPT_NOBODY, FALSE);
-	//curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
-	
-	curl_setopt($ch, CURLOPT_POST, TRUE); 
-	//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-    curl_setopt($ch, CURLOPT_HTTPGET, FALSE);
-	
-	curl_setopt($ch, CURLOPT_URL, $searchurl);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	
+	$ch = curl_init();
+		curl_setopt($ch, CURLOPT_COOKIESESSION, false);
+		curl_setopt($ch, CURLOPT_COOKIEJAR, "cookies.txt");
+		curl_setopt($ch, CURLOPT_COOKIEFILE, "cookies.txt");
+		curl_setopt($ch, CURLOPT_REFERER, "https://schedule.msu.edu/searchResults.asp");
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36'); 
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_HEADER, TRUE);
+		curl_setopt($ch, CURLOPT_NOBODY, FALSE);
+		//curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
+		curl_setopt($ch, CURLOPT_POST, TRUE); 
+		//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+		curl_setopt($ch, CURLOPT_HTTPGET, FALSE);
+		curl_setopt($ch, CURLOPT_URL, $searchurl);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	$response = curl_exec($ch);
 
-	
 	$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 	$header = substr($response, 0, $header_size);
 	$body = substr($response, $header_size);
 	
 	curl_close($ch);
 	unset($ch);
-	
-	
 	
 	$begin = "<td headers=\"Enrolled";
 	
@@ -202,12 +175,12 @@ $ch = curl_init();
 function findStamp($body) {
 	$begin = "EncryptedStamp\" value=\"";
 	
-	$starnr = strpos($body,$begin);
-    $starnr += strlen($begin);
+	$start = strpos($body,$begin);
+    $start += strlen($begin);
 	
-	$laenge = 12;
-    $id= substr($body,$starnr,$laenge); 
-    return $id;
+	$length = 12;
+    $stamp = substr($body,$start,$length); 
+    return $stamp;
 }
 
 function findPWField($body) {
@@ -217,24 +190,13 @@ function findPWField($body) {
 	$pwSub = substr($body,$pwStart);
 	
 	$begin = "<input name=\"";
-	$starnr = strpos($pwSub,$begin);
-    $starnr += strlen($begin);
+	$start = strpos($pwSub,$begin);
+    $start += strlen($begin);
 	
-	$laenge = 5;
-    $id= substr($pwSub,$starnr,$laenge); 
-    return $id;
+	$length = 5;
+    $pw = substr($pwSub,$start,$length); 
+    return $pw;
 }
 
-function findSessionID($html){
-    //extract session id value
-    $begin = 'JSESSIONID=';
-
-    $starnr = strpos($html,$begin);
-    $starnr += strlen($begin);
-
-    $laenge = 32;
-    $id= substr($html,$starnr,$laenge); 
-    return $id;
-}
 
 ?>

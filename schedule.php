@@ -1,7 +1,7 @@
 <?php
 
-$username = "bielick3";
-$password = "SandyBA30";
+$username = "";
+$password = "";
 
 ////////////////////////////////////////////////////
 // Login

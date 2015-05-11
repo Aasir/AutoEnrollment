@@ -4,7 +4,10 @@
 <p>
 	At this point, the program is only capable of signing up for a single class, given a hardcoded string of post parameters specific to that class.
 	<br>
+	<br>
 	The point of this script is to be able to bypass the waitlist for a class by jumping into it before the people in the waitlist are notified of the opening.
+	<br>
+	<br>
 	** This is a proof of concept, not intended for actual use **
 </p>
 <h1>

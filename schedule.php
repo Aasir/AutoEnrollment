@@ -1,7 +1,7 @@
 <?php
 
-$username = "";
-$password = "";
+$username = "bielick3";
+$password = "SandyBA30";
 
 ////////////////////////////////////////////////////
 // Login
@@ -79,7 +79,7 @@ unset($ch);
 $enrolled = findEnrolled();
 While($enrolled > 49) {
 	sleep(5);
-	//echo $enrolled;
+	echo $enrolled;
 	
 	$enrolled = findEnrolled();
 }

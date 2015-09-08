@@ -1,4 +1,11 @@
 <h1>
+	The Idea
+</h1>
+<p>
+	The point of this project was to reverse engineer and replicate the API calls used by the enrollment system using Fiddler, a web debugger, to analyze traffic sent to and from the system.
+</p>
+
+<h1>
 	Features:
 </h1>
 <p>

@@ -21,5 +21,5 @@
 	Future Updates:
 </h1>
 <p>
-	Add the ability to have to script search for a class given the department, course number, section and semester
+	Add the ability to have to script search for a class given the department, course number, section, and semester. Possibly adding location and time range.
 </p>
